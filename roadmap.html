@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elite Fullstack Roadmap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          boxShadow: { glow: '0 0 40px rgba(59,130,246,.25)' }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #050816; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 999px; }
+
+    .glass {
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #67e8f9, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card-hover { transition: .35s ease; }
+    .card-hover:hover {
+      transform: translateY(-8px);
+      border-color: rgba(59,130,246,.3);
+      box-shadow: 0 0 40px rgba(59,130,246,.15);
+    }
+
+    /* Custom checkbox styling */
+    .item-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid rgba(100,200,255,0.35);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 3px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .item-checkbox:hover {
+      border-color: rgba(100,200,255,0.7);
+      background: rgba(100,200,255,0.08);
+    }
+
+    .item-checkbox:checked {
+      background: linear-gradient(135deg, #22d3ee, #3b82f6);
+      border-color: transparent;
+    }
+
+    .item-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1.5px;
+      width: 5px;
+      height: 8px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    /* Strike through checked item text */
+    .item-checkbox:checked ~ .item-label {
+      opacity: 0.4;
+      text-decoration: line-through;
+    }
+
+    .item-label {
+      transition: opacity 0.25s ease;
+    }
+
+    /* Day card collapsed state */
+    .day-header { cursor: pointer; user-select: none; }
+    .day-body { overflow: hidden; transition: max-height 0.35s ease, opacity 0.3s ease; }
+    .day-body.collapsed { max-height: 0 !important; opacity: 0; }
+
+    .day-progress-bar {
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .day-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen">
+  <div class="max-w-[1800px] mx-auto px-6 py-10">
+
+    <!-- HERO -->
+    <div class="text-center mb-20">
+      <div class="inline-flex items-center gap-3 px-5 py-3 rounded-full glass mb-8">
+        <span class="uppercase tracking-[0.35em] text-xs text-cyan-300">Elite Fullstack Engineer Roadmap</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black leading-tight gradient-text">Mastery Checklist</h1>
+      <p class="max-w-5xl mx-auto mt-8 text-slate-400 text-lg leading-8">
+        A production-grade roadmap designed to transform you from junior-level developer
+        into a senior full stack engineer capable of building scalable systems,
+        enterprise applications, cloud infrastructure, CI/CD pipelines,
+        optimized databases, distributed systems, and modern frontend architectures.
+      </p>
+
+      <!-- OVERALL PROGRESS -->
+      <div class="glass rounded-[32px] p-8 mt-12 max-w-5xl mx-auto">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-black">Overall Progress</h2>
+          <span id="progressText" class="text-cyan-300 text-xl font-black">0%</span>
+        </div>
+        <div class="w-full h-5 rounded-full bg-slate-900 overflow-hidden">
+          <div id="progressBar"
+            class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500"
+            style="width:0%">
+          </div>
+        </div>
+        <div class="flex justify-between mt-3 text-xs text-slate-500">
+          <span id="completedCount">0 completed</span>
+          <span id="totalCount">0 total items</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div id="roadmap" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
+  </div>
+
+  <script>
+   const sections = [
+  {
+    title: "GoLang Mastery",
+    icon: "🐹",
+    gradient: "from-cyan-500 to-blue-600",
+    weeks: [
+      {
+        title: "Week 1 - Go Foundations",
+        days: [
+          {
+            title: "Environment Setup & Tooling",
+            details: [
+              "Install Go SDK properly",
+              "Understand GOROOT and GOPATH",
+              "Setup Go Modules for dependency management",
+              "Initialize and structure Go projects",
+              "Configure VSCode Go extensions",
+              "Setup debugging tools (Delve)",
+              "Use gofmt, go vet, and linting tools",
+              "Understand Go build & compile process",
+              "Learn workspace/project architecture",
+              "Setup Git + GitHub workflow"
+            ]
+          },
+          {
+            title: "Variables, Types & Memory",
+            details: [
+              "Primitive data types (int, float, string, bool)",
+              "Constants and iota usage patterns",
+              "Type conversion and assertions",
+              "Pointers and memory referencing",
+              "Stack vs Heap memory allocation",
+              "Escape analysis basics",
+              "Zero values in Go",
+              "Struct memory alignment",
+              "Garbage collection behavior",
+              "Performance optimization fundamentals"
+            ]
+          },
+          {
+            title: "Functions & Control Flow",
+            details: [
+              "Function declaration patterns",
+              "Multiple return values",
+              "Named returns",
+              "Variadic functions",
+              "Closures and function scope",
+              "Defer, panic, recover lifecycle",
+              "Switch statements and type switches",
+              "Loop control and labels",
+              "Recursion patterns",
+              "Error-first design philosophy"
+            ]
+          },
+          {
+            title: "Interfaces & Architecture",
+            details: [
+              "Interface implementation (implicit)",
+              "Composition over inheritance",
+              "Struct embedding",
+              "SOLID principles in Go",
+              "Dependency injection patterns",
+              "Repository architecture pattern",
+              "Service layer separation",
+              "Clean architecture structure",
+              "Modular backend systems",
+              "Scalable production-ready design"
+            ]
+          }
+        ]
+      },
+      {
+        title: "Week 2 - Backend Engineering",
+        days: [
+          {
+            title: "HTTP & REST API Design",
+            details: [
+              "HTTP lifecycle understanding",
+              "RESTful API design principles",
+              "Request/response cycle handling",
+              "JSON encoding/decoding",
+              "HTTP status code usage",
+              "Input validation strategies",
+              "Authentication mechanisms",
+              "JWT-based auth systems",
+              "Middleware architecture",
+              "Centralized error handling"
+            ]
+          },
+          {
+            title: "Fiber Framework Mastery",
+            details: [
+              "Fiber project setup and structure",
+              "Routing system (params, query, groups)",
+              "Controller-service separation",
+              "Middleware chaining system",
+              "Auth middleware implementation",
+              "Request lifecycle flow",
+              "Dependency injection patterns",
+              "API versioning structure",
+              "Production-grade folder structure",
+              "Performance optimization in Fiber"
+            ]
+          },
+          {
+            title: "Concurrency Engineering",
+            details: [
+              "Goroutines fundamentals",
+              "Channels (unbuffered & buffered)",
+              "Select statement usage",
+              "Worker pool design",
+              "Mutex and synchronization",
+              "Race condition detection",
+              "Deadlock prevention strategies",
+              "Parallel API processing",
+              "Concurrent data pipelines",
+              "Performance scaling techniques"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "React Mastery",
+    icon: "⚛️",
+    gradient: "from-sky-500 to-cyan-500",
+    weeks: [
+      {
+        title: "Week 1 - React Foundations",
+        days: [
+          {
+            title: "React Core Fundamentals",
+            details: [
+              "JSX syntax and rendering",
+              "Virtual DOM diffing algorithm",
+              "Component lifecycle behavior",
+              "Functional components structure",
+              "Component composition patterns",
+              "Props passing strategies",
+              "State management basics",
+              "Event handling system",
+              "Conditional rendering techniques",
+              "Reusable component design"
+            ]
+          },
+          {
+            title: "Hooks System",
+            details: [
+              "useState state management",
+              "useEffect lifecycle handling",
+              "useMemo optimization",
+              "useRef DOM persistence",
+              "useCallback memoized functions",
+              "Custom hooks creation",
+              "Dependency array logic",
+              "Effect cleanup patterns",
+              "Hook performance optimization",
+              "Reusable logic extraction"
+            ]
+          },
+          {
+            title: "React Router & Layouts",
+            details: [
+              "Nested routing system",
+              "Protected routes/auth guards",
+              "Dynamic route parameters",
+              "Route-based code splitting",
+              "Lazy loading components",
+              "Layout nesting architecture",
+              "Navigation systems",
+              "Route guards & redirects",
+              "Authentication flows",
+              "Scalable routing structure"
+            ]
+          }
+        ]
+      },
+      {
+        title: "Week 2 - State Management",
+        days: [
+          {
+            title: "Context API Architecture",
+            details: [
+              "Context provider setup",
+              "Global state design",
+              "Reducer-based state logic",
+              "Dispatch action patterns",
+              "Memoization optimization",
+              "State segmentation strategies",
+              "Authentication context flow",
+              "Theme management system",
+              "Performance tuning",
+              "Global app architecture"
+            ]
+          },
+          {
+            title: "Redux Toolkit",
+            details: [
+              "Store configuration",
+              "Slice creation",
+              "Reducers & actions",
+              "Async thunks",
+              "Middleware integration",
+              "Redux DevTools usage",
+              "Normalized state design",
+              "Caching strategies",
+              "Scalable store architecture",
+              "Production Redux patterns"
+            ]
+          },
+          {
+            title: "TanStack Query",
+            details: [
+              "Server state management",
+              "Query caching system",
+              "Mutations handling",
+              "Optimistic updates",
+              "Pagination strategies",
+              "Infinite scrolling",
+              "Background refetching",
+              "Data invalidation logic",
+              "Prefetching techniques",
+              "API performance optimization"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "Laravel Mastery",
+    icon: "🔥",
+    gradient: "from-red-500 to-rose-600",
+    weeks: [
+      {
+        title: "Week 1 - Laravel Foundations",
+        days: [
+          {
+            title: "Core Setup & MVC",
+            details: [
+              "Laravel installation and setup",
+              "MVC architecture understanding",
+              "Routing system (web/api routes)",
+              "Controllers and resource controllers",
+              "Blade templating engine",
+              "Environment configuration (.env)",
+              "Database connection setup",
+              "Migrations and schema design",
+              "Seeders and factories",
+              "Artisan CLI usage"
+            ]
+          },
+          {
+            title: "Authentication & APIs",
+            details: [
+              "Laravel authentication system",
+              "Sanctum / JWT authentication",
+              "Middleware implementation",
+              "API resource routing",
+              "Request validation rules",
+              "Eloquent ORM relationships",
+              "Authorization gates & policies",
+              "Error handling strategies",
+              "API resource transformers",
+              "Secure backend architecture"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "TypeScript Mastery",
+    icon: "📘",
+    gradient: "from-blue-500 to-indigo-600",
+    weeks: [
+      {
+        title: "Week 1 - TypeScript Fundamentals",
+        days: [
+          {
+            title: "Typing System",
+            details: [
+              "Primitive and complex types",
+              "Interfaces vs type aliases",
+              "Union and intersection types",
+              "Enums usage patterns",
+              "Generics fundamentals",
+              "Type inference system",
+              "Strict mode configuration",
+              "Utility types (Partial, Pick, Omit)",
+              "Type narrowing techniques",
+              "Type-safe architecture"
+            ]
+          },
+          {
+            title: "Advanced Patterns",
+            details: [
+              "Mapped types",
+              "Conditional types",
+              "Keyof operator usage",
+              "Custom type guards",
+              "Decorators (advanced TS)",
+              "Module augmentation",
+              "Declaration merging",
+              "Advanced generics patterns",
+              "Reusable type utilities",
+              "Large-scale type systems"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "Node.js Mastery",
+    icon: "🟩",
+    gradient: "from-green-600 to-lime-500",
+    weeks: [
+      {
+        title: "Week 1 - Backend Foundations",
+        days: [
+          {
+            title: "Core Node.js",
+            details: [
+              "Event loop architecture",
+              "Module system (CommonJS/ESM)",
+              "File system operations",
+              "Streams and buffers",
+              "Async programming patterns",
+              "Error handling strategies",
+              "Process lifecycle",
+              "NPM ecosystem usage",
+              "Memory management basics",
+              "Performance tuning"
+            ]
+          },
+          {
+            title: "Express API Development",
+            details: [
+              "Express setup and structure",
+              "Routing system design",
+              "Middleware pipeline",
+              "REST API design",
+              "Authentication systems",
+              "JWT implementation",
+              "Request validation",
+              "Centralized error handling",
+              "Logging strategies",
+              "Scalable API architecture"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "MySQL Mastery",
+    icon: "🗄️",
+    gradient: "from-yellow-500 to-orange-500",
+    weeks: [
+      {
+        title: "Week 1 - Database Fundamentals",
+        days: [
+          {
+            title: "SQL Core Concepts",
+            details: [
+              "SELECT queries and filtering",
+              "WHERE conditions",
+              "JOIN operations (INNER, LEFT, RIGHT)",
+              "GROUP BY aggregations",
+              "ORDER BY sorting",
+              "Indexes and indexing strategies",
+              "Normalization (1NF-3NF)",
+              "Relationship design",
+              "Constraints (PK, FK, UNIQUE)",
+              "Transactions (ACID principles)"
+            ]
+          },
+          {
+            title: "Advanced SQL",
+            details: [
+              "Query optimization techniques",
+              "Subqueries and nested queries",
+              "Views and materialized views",
+              "Stored procedures",
+              "Triggers and automation",
+              "Execution plan analysis",
+              "Partitioning strategies",
+              "Replication concepts",
+              "Database scaling strategies",
+              "Performance tuning"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "Tailwind CSS Mastery",
+    icon: "🎨",
+    gradient: "from-cyan-400 to-sky-600",
+    weeks: [
+      {
+        title: "Week 1 - Utility First CSS",
+        days: [
+          {
+            title: "Core Utilities",
+            details: [
+              "Spacing system (padding/margin)",
+              "Flexbox layout system",
+              "Grid system design",
+              "Typography utilities",
+              "Color system usage",
+              "Responsive design breakpoints",
+              "Dark mode implementation",
+              "State variants (hover, focus)",
+              "Component design patterns",
+              "Design system thinking"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "CI/CD Mastery",
+    icon: "🚀",
+    gradient: "from-purple-500 to-indigo-600",
+    weeks: [
+      {
+        title: "Week 1 - DevOps Pipeline Basics",
+        days: [
+          {
+            title: "CI/CD Fundamentals",
+            details: [
+              "Continuous Integration concepts",
+              "Continuous Deployment pipelines",
+              "Git branching strategies",
+              "Build automation pipelines",
+              "Automated testing integration",
+              "Docker container basics",
+              "Environment staging setup",
+              "Rollback strategies",
+              "Deployment automation",
+              "Versioning systems"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "Testing Mastery",
+    icon: "🧪",
+    gradient: "from-pink-500 to-rose-500",
+    weeks: [
+      {
+        title: "Week 1 - Testing Fundamentals",
+        days: [
+          {
+            title: "Testing Types",
+            details: [
+              "Unit testing principles",
+              "Integration testing",
+              "End-to-end testing",
+              "Mocking strategies",
+              "Code coverage analysis",
+              "Test Driven Development (TDD)",
+              "Assertions and matchers",
+              "Test runner tools",
+              "Jest/Vitest frameworks",
+              "CI testing automation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "AWS Mastery",
+    icon: "☁️",
+    gradient: "from-orange-500 to-yellow-500",
+    weeks: [
+      {
+        title: "Week 1 - Cloud Foundations",
+        days: [
+          {
+            title: "AWS Core Services",
+            details: [
+              "EC2 instance management",
+              "S3 storage system",
+              "IAM security roles",
+              "VPC networking basics",
+              "CloudWatch monitoring",
+              "Lambda serverless functions",
+              "RDS database hosting",
+              "Route 53 DNS management",
+              "Elastic Beanstalk deployment",
+              "AWS CLI setup"
+            ]
+          },
+          {
+            title: "Deployment & Scaling",
+            details: [
+              "Auto scaling groups",
+              "Load balancing strategies",
+              "Serverless architecture design",
+              "CI/CD on AWS",
+              "Security best practices",
+              "Cost optimization strategies",
+              "Monitoring & alerting systems",
+              "Infrastructure as Code basics",
+              "Cloud architecture patterns",
+              "Production deployment workflows"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+    const roadmap = document.getElementById('roadmap');
+
+    function renderRoadmap() {
+      roadmap.innerHTML = "";
+
+      sections.forEach((section, sI) => {
+        const card = document.createElement('div');
+        card.className = 'glass rounded-[32px] overflow-hidden card-hover';
+
+        const weeksHTML = section.weeks.map((week, wI) => {
+          const daysHTML = week.days.map((day, dI) => {
+            const detailsHTML = day.details.map((detail, itemI) => {
+              const id = `item-${sI}-${wI}-${dI}-${itemI}`;
+              return `
+                <div class="flex items-start gap-3 rounded-2xl bg-white/[0.03] border border-white/5 px-4 py-3 hover:bg-white/[0.05] transition-colors">
+                  <input
+                    type="checkbox"
+                    id="${id}"
+                    class="item-checkbox"
+                    onchange="onItemChange(this)"
+                    data-section="${sI}" data-week="${wI}" data-day="${dI}"
+                  >
+                  <label for="${id}" class="item-label text-sm leading-6 text-slate-300 cursor-pointer select-none">${detail}</label>
+                </div>
+              `;
+            }).join('');
+
+            const dayId = `day-${sI}-${wI}-${dI}`;
+            const bodyId = `body-${sI}-${wI}-${dI}`;
+
+            return `
+              <div class="rounded-[28px] bg-white/[0.02] border border-white/5 overflow-hidden">
+                <!-- Day Header -->
+                <div class="day-header flex items-center justify-between px-6 py-5 hover:bg-white/[0.03] transition-colors"
+                     onclick="toggleDay('${bodyId}', this)">
+                  <div class="flex-1 min-w-0">
+                    <div class="uppercase tracking-[0.2em] text-xs text-slate-500 mb-1">Day ${dI + 1}</div>
+                    <div class="text-xl font-black text-white truncate">${day.title}</div>
+                    <!-- Mini progress bar -->
+                    <div class="day-progress-bar w-full mt-2" style="max-width:240px">
+                      <div class="day-progress-fill" id="prog-${sI}-${wI}-${dI}" style="width:0%"></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3 ml-4 shrink-0">
+                    <span class="text-xs text-slate-400" id="count-${sI}-${wI}-${dI}">0/${day.details.length}</span>
+                    <svg class="chevron w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Day Body -->
+                <div id="${bodyId}" class="day-body px-6 pb-6" style="max-height:2000px; opacity:1;">
+
+                  <!-- Tags -->
+                  <div class="flex flex-wrap gap-2 mb-5 pt-1">
+                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs">Deep Theory</span>
+                    <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs">Architecture</span>
+                    <span class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs">Production Patterns</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs">Real Projects</span>
+                  </div>
+
+                  <!-- Detail items with individual checkboxes -->
+                  <div class="grid gap-2">
+                    ${detailsHTML}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="rounded-[28px] bg-black/20 border border-white/10 p-6">
+              <h3 class="text-2xl font-black text-cyan-300 mb-6">${week.title}</h3>
+
+              <!-- Execution Strategy -->
+              <div class="rounded-3xl bg-cyan-500/5 border border-cyan-500/20 p-6 mb-6">
+                <div class="uppercase tracking-[0.3em] text-xs text-cyan-300 mb-4">Execution Strategy</div>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                  <div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-cyan-400 mt-2"></div><div class="text-slate-300">Build production-grade projects weekly</div></div>
+                  <div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-cyan-400 mt-2"></div><div class="text-slate-300">Push all code to GitHub consistently</div></div>
+                  <div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-cyan-400 mt-2"></div><div class="text-slate-300">Refactor code after every feature</div></div>
+                  <div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-cyan-400 mt-2"></div><div class="text-slate-300">Learn architecture instead of memorization</div></div>
+                </div>
+              </div>
+
+              <div class="space-y-4">${daysHTML}</div>
+            </div>
+          `;
+        }).join('');
+
+        card.innerHTML = `
+          <div class="bg-gradient-to-r ${section.gradient} p-8">
+            <div class="flex items-center gap-5">
+              <div class="text-6xl">${section.icon}</div>
+              <div>
+                <h2 class="text-4xl font-black">${section.title}</h2>
+                <p class="text-white/80 mt-2">Beginner → Senior Engineer</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-8 space-y-8">${weeksHTML}</div>
+        `;
+
+        roadmap.appendChild(card);
+      });
+
+      loadProgress();
+    }
+
+    function toggleDay(bodyId, header) {
+      const body = document.getElementById(bodyId);
+      const chevron = header.querySelector('.chevron');
+      if (body.classList.contains('collapsed')) {
+        body.classList.remove('collapsed');
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        body.classList.add('collapsed');
+        chevron.style.transform = 'rotate(-90deg)';
+      }
+    }
+
+    function onItemChange(checkbox) {
+      saveProgress();
+      updateDayProgress(
+        checkbox.dataset.section,
+        checkbox.dataset.week,
+        checkbox.dataset.day
+      );
+      updateOverallProgress();
+    }
+
+    function updateDayProgress(sI, wI, dI) {
+      const items = document.querySelectorAll(`input[data-section="${sI}"][data-week="${wI}"][data-day="${dI}"]`);
+      const checked = document.querySelectorAll(`input[data-section="${sI}"][data-week="${wI}"][data-day="${dI}"]:checked`);
+      const pct = items.length ? Math.round((checked.length / items.length) * 100) : 0;
+
+      const bar = document.getElementById(`prog-${sI}-${wI}-${dI}`);
+      const count = document.getElementById(`count-${sI}-${wI}-${dI}`);
+      if (bar) bar.style.width = pct + '%';
+      if (count) count.textContent = `${checked.length}/${items.length}`;
+    }
+
+    function updateOverallProgress() {
+      const total = document.querySelectorAll('input.item-checkbox').length;
+      const completed = document.querySelectorAll('input.item-checkbox:checked').length;
+      const pct = total ? Math.round((completed / total) * 100) : 0;
+
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent = pct + '%';
+      document.getElementById('completedCount').textContent = `${completed} completed`;
+      document.getElementById('totalCount').textContent = `${total} total items`;
+    }
+
+    function saveProgress() {
+      const checkboxes = document.querySelectorAll('input.item-checkbox');
+      const progress = {};
+      checkboxes.forEach(box => { progress[box.id] = box.checked; });
+      localStorage.setItem('roadmap-item-progress', JSON.stringify(progress));
+    }
+
+    function loadProgress() {
+      const progress = JSON.parse(localStorage.getItem('roadmap-item-progress')) || {};
+      Object.keys(progress).forEach(id => {
+        const cb = document.getElementById(id);
+        if (cb) cb.checked = progress[id];
+      });
+
+      // Refresh all day progress bars
+      sections.forEach((section, sI) => {
+        section.weeks.forEach((week, wI) => {
+          week.days.forEach((day, dI) => {
+            updateDayProgress(sI, wI, dI);
+          });
+        });
+      });
+
+      updateOverallProgress();
+    }
+
+    renderRoadmap();
+  </script>
+</body>
+</html>
