@@ -1,0 +1,31 @@
+1. Tell me about yourself and your experience as a Backend Developer:
+
+Hello, my name is Jocel. I'm a full-stack web developer with 4 years of professional experience building, maintaining, and deploying production-ready applications for both client and internal use.
+
+My core stack includes Go with the Fiber framework, Laravel/PHP, and Node.js with Express. On the frontend, I work with React and Vue, using Tailwind CSS for styling. I also have experience with relational and NoSQL databases, including MySQL, PostgreSQL, and MongoDB.
+
+While I'm comfortable working across the full stack, my recent focus has been on backend development. That includes designing and developing REST APIs, integrating third-party services, managing and optimizing databases, and deploying applications using GitHub Actions workflows, along with NinjaRMM for server management.
+
+I still take on frontend tasks when needed, but a good part of my role now involves supporting our junior developers through code reviews, mentoring, and technical guidance to help them grow their skills.
+
+I'm now looking for a new opportunity where I can keep growing as a backend developer, gain more knowledge of modern web development, and contribute to challenging, impactful projects.
+
+2. Why are you interested in this Senior Golang role, and what draws you to working on novated leasing technology through an outsourced arrangement?
+
+I've been a full-stack developer for 4 years, and lately I've been focusing on backend work, with Go as one of my main tools. I feel it's the right time to take the next step, and a senior Golang role fits that. I want more ownership of backend systems and the chance to work with different teams.
+
+What interests me about novated leasing is how many parties it involves: the employer, the employee, the salary packager, and the financier. The system has to keep payments and compliance accurate over the whole lease term, which takes reliable APIs and careful handling of financial data. That's the kind of work I already do with REST APIs, integrations, and SQL.
+
+As for the outsourced arrangement, I'm comfortable with it. I've worked on both client and internal projects, so I'm used to understanding requirements, communicating clearly, and delivering as part of a team.
+
+3. Walk me through your last two or three roles. What was your Go and MySQL involvement in each?
+
+I've been at MotivIT since November 2022 as a full-stack developer, and I've worked on several projects there. but here are the most recent one.
+
+The first is an internal portal that combines most of our tools for managing client data, such as ticketing, subscriptions, documentation, checklists, and other integrations. I work primarily on the backend, which is written in Go. I design the MySQL tables and their relationships, build the REST APIs, and handle authentication with JWT, using Microsoft OAuth for login. The next phase is billing. The application will calculate each client's bill based on the licenses and resources they consume, then email it to them automatically every billing cycle.
+
+More recently, most of my work has been website development. We're building a site with a headless CMS (Strapi) for the backend and Nuxt for the frontend. I manage the backend APIs in the CMS and connect them to the frontend. I also manage the CI/CD pipeline with GitHub Actions and use NinjaRMM for server management.
+
+now we are exploring other alternative cms like medusa and vendure.
+
+
