@@ -27,5 +27,21 @@ The first is an internal portal that combines most of our tools for managing cli
 More recently, most of my work has been website development. We're building a site with a headless CMS (Strapi) for the backend and Nuxt for the frontend. I manage the backend APIs in the CMS and connect them to the frontend. I also manage the CI/CD pipeline with GitHub Actions and use NinjaRMM for server management.
 
 now we are exploring other alternative cms like medusa and vendure.
+4. This role may involve Vue.js and legacy Laravel/PHP work alongside Go. How do you feel about that mix?
 
+I'm comfortable working with both. I have professional experience with Vue.js and Laravel/PHP, and in my current company we use them for some of our portals and client systems. I also have experience maintaining legacy systems and portals, so I'm comfortable working in an existing codebase and improving it step by step.
+
+5. What are your salary expectations, and what is your notice period or availability to start?
+
+I'm open to discussing salary, but I'm expecting around PHP 60,000 per month. For my availability, I can start 30 days after I submit my resignation.
+
+6. This is a home-based role with an Australian client. What is your work setup, and are you comfortable with Australian overlap hours?
+
+Yes, I'm comfortable working Australian overlap hours. I have a dedicated, quiet workspace at home and a reliable internet connection.
+
+7. Why are you looking for a new opportunity, and why did you leave (or want to leave) your current role?
+
+I've been working as a full-stack web developer at my company for 4 years, and I feel this is the right time to look for a new opportunity. 
+
+I want to grow, take on more ownership of backend systems, and work on exciting projects.
 
