@@ -1,0 +1,15 @@
+1. Which Go web framework and libraries do you use most, and why? The team uses Gin: what does it give you over the standard library net/http?
+
+My main Go framework is Fiber. It's fast, the API is clean, and it has routing, route groups, middleware, and JSON handling built in. We use it as our main backend technology at MotivIT.
+
+I don't have production experience with Gin, but I've looked into it and built a small test app with the help of AI, and I found the concepts very similar to Fiber. It also has a lot of built-in features, such as routing, route groups, middleware, request binding and validation, and JSON responses. 
+
+Compared to net/http, a framework like Gin saves you from writing that boilerplate yourself, and it keeps handlers consistent across a team.
+
+2. Explain how you handle errors, context and concurrency in Go. When would you use goroutines and channels, and what pitfalls have you hit?
+
+For errors, I check the returned error in every function, log it with enough detail to debug, and return the correct HTTP status code to the frontend.
+
+For concurrency, I used goroutines to sync batch updates from one database to a new one. I processed the batches in parallel, using a semaphore (a buffered channel) to limit how many ran at once, a channel to collect errors, and a WaitGroup to wait for completion. I logged every error and added a context deadline so the process couldn't run forever.
+
+One pitfall I hit was starting too many goroutines at once, which put heavy load on the database. I fixed it with the semaphore, so the sync stayed fast without overloading the database.
